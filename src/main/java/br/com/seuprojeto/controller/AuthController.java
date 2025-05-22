@@ -2,6 +2,7 @@ package br.com.seuprojeto.controller;
 
 import br.com.seuprojeto.dto.CadastroRequest;
 import br.com.seuprojeto.dto.LoginRequestDTO;
+import br.com.seuprojeto.dto.LoginResponseDTO;
 import br.com.seuprojeto.model.Usuario;
 import br.com.seuprojeto.service.AuthService;
 import jakarta.validation.Valid;
@@ -21,7 +22,8 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody @Valid LoginRequestDTO request) {
+    public LoginResponseDTO login(@RequestBody @Valid LoginRequestDTO request) {
         return authService.login(request);
     }
+
 }

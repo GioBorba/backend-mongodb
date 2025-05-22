@@ -2,6 +2,7 @@ package br.com.seuprojeto.service;
 
 import br.com.seuprojeto.dto.CadastroRequest;
 import br.com.seuprojeto.dto.LoginRequestDTO;
+import br.com.seuprojeto.dto.LoginResponseDTO;
 import br.com.seuprojeto.model.Usuario;
 import br.com.seuprojeto.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
@@ -34,15 +35,22 @@ public class AuthService {
 
 
 
-    public String login(LoginRequestDTO request) {
+    public LoginResponseDTO login(LoginRequestDTO request) {
+        // Lógica para autenticar o usuário (email e senha)
         Usuario usuario = usuarioRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
-        if (!passwordEncoder.matches(request.getSenha(), usuario.getSenha())) {
-            throw new RuntimeException("Credenciais inválidas");
+        // Validação da senha (exemplo simples)
+        if (!usuario.getSenha().equals(request.getSenha())) {
+            throw new RuntimeException("Senha inválida");
         }
 
-
-        return "Login realizado com sucesso!";
+        // Retorna o DTO com dados do usuário
+        return LoginResponseDTO.builder()
+                .id(usuario.getId())
+                .nome(usuario.getNome())
+                .email(usuario.getEmail())
+                .build();
     }
+
 }

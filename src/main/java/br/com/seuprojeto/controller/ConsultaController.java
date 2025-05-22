@@ -1,43 +1,38 @@
 package br.com.seuprojeto.controller;
 
-import br.com.seuprojeto.dto.*;
-import br.com.seuprojeto.model.Usuario;
+import br.com.seuprojeto.dto.ConsultaRequestDTO;
+import br.com.seuprojeto.model.Consulta;
 import br.com.seuprojeto.service.ConsultaService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/consultas")
+@RequestMapping("/consultas")
 @RequiredArgsConstructor
 public class ConsultaController {
 
     private final ConsultaService consultaService;
 
-    @GetMapping
-    public ResponseEntity<List<ConsultaResponseDTO>> listarConsultas(
-            @RequestParam(required = false) String usuarioId,
-            Authentication authentication
-    ) {
-        if (usuarioId == null && authentication.getAuthorities().stream()
-                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
-            usuarioId = null; // Admin vê todas
-        } else if (usuarioId == null) {
-            usuarioId = ((Usuario) authentication.getPrincipal()).getId(); // User vê só as suas
-        }
-        return ResponseEntity.ok(consultaService.listarConsultas(usuarioId));
+    @PostMapping
+    public Consulta criarConsulta(@RequestBody @Valid ConsultaRequestDTO dto) {
+        return consultaService.criarConsulta(dto);
     }
 
-    @PostMapping
-    public ResponseEntity<ConsultaResponseDTO> criarConsulta(
-            @RequestBody ConsultaRequestDTO request,
-            Authentication authentication
-    ) {
-        String usuarioEmail = authentication.getName();
-        return ResponseEntity.ok(consultaService.criarConsulta(request, usuarioEmail));
+    @GetMapping("/usuario/{usuarioId}")
+    public List<Consulta> listarConsultas(@PathVariable String usuarioId) {
+        return consultaService.listarConsultasPorUsuario(usuarioId);
+    }
+
+    @PutMapping("/{id}")
+    public Consulta atualizarConsulta(@PathVariable String id, @RequestBody @Valid ConsultaRequestDTO dto) {
+        return consultaService.atualizarConsulta(id, dto);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deletarConsulta(@PathVariable String id) {
+        consultaService.deletarConsulta(id);
     }
 }

@@ -7,11 +7,12 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class LembreteRequestDTO {
     @NotBlank
     private String mensagem;
 
     @FutureOrPresent
     private LocalDateTime dataHora;
+
+    private String usuarioId;
 }

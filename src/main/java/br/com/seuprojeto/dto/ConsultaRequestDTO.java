@@ -9,9 +9,14 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ConsultaRequestDTO {
-    @Future
+
+    @NotBlank
+    private String nome;
+
+    @NotNull
     private LocalDateTime dataHora;
 
-    @NotEmpty
     private List<String> tratamentosIds; // IDs dos tratamentos
+
+    private String usuarioId;
 }

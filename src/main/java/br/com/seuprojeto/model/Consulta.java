@@ -20,13 +20,15 @@ public class Consulta {
     @Id
     private String id;
 
-    @Future(message = "A data da consulta deve ser futura")
+    @NotBlank
+    private String nome;
+
+    @NotNull
     private LocalDateTime dataHora;
 
     @DBRef
     private Usuario usuario;
 
-    @NotEmpty(message = "Selecione pelo menos um tratamento")
     @DBRef
     private List<Tratamento> tratamentos;
 }

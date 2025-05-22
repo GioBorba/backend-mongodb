@@ -6,8 +6,11 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-
-public class DicaRequestDTO {
+public class LoginRequestDTO {
     @NotBlank
-    private String mensagem;
+    @Email
+    private String email;
+
+    @NotBlank
+    private String senha;
 }

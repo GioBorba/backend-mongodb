@@ -1,5 +1,5 @@
-FROM openjdk:21-jdk-alpine
+FROM eclipse-temurin:21-jdk
 VOLUME /tmp
 EXPOSE 8080
-COPY target/backend-challenge-0.0.1-SNAPSHOT.jar app.jar
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+COPY target/*.jar app.jar
+ENTRYPOINT ["java","-jar","/app.jar"]

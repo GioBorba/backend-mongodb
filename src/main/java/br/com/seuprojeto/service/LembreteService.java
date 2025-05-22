@@ -1,6 +1,7 @@
 package br.com.seuprojeto.service;
 
 import br.com.seuprojeto.dto.LembreteRequestDTO;
+import br.com.seuprojeto.dto.LembreteResponseDTO;
 import br.com.seuprojeto.model.Lembrete;
 import br.com.seuprojeto.model.Usuario;
 import br.com.seuprojeto.repository.LembreteRepository;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -29,9 +31,21 @@ public class LembreteService {
         return lembreteRepository.save(lembrete);
     }
 
-    public List<Lembrete> listarPorUsuario(String usuarioId) {
-        return lembreteRepository.findByUsuarioId(usuarioId);
+
+    public List<LembreteResponseDTO> listarPorUsuario(String usuarioId) {
+        return lembreteRepository.findByUsuarioId(usuarioId).stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
     }
+
+    private LembreteResponseDTO convertToDto(Lembrete lembrete) {
+        return LembreteResponseDTO.builder()
+                .id(lembrete.getId())
+                .mensagem(lembrete.getMensagem())
+                .dataHora(lembrete.getDataHora())
+                .build();
+    }
+
 
     public Lembrete atualizarLembrete(String id, LembreteRequestDTO dto) {
         Lembrete lembrete = lembreteRepository.findById(id)

@@ -7,6 +7,7 @@ import br.com.seuprojeto.model.Usuario;
 import br.com.seuprojeto.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,8 +23,8 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public LoginResponseDTO login(@RequestBody @Valid LoginRequestDTO request) {
-        return authService.login(request);
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid LoginRequestDTO request) {
+        return ResponseEntity.ok(authService.login(request));
     }
 
 }
